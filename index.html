@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Study Assistant — cited, and it refuses</title>
+<meta name="description" content="A security study assistant that answers from a cited corpus and refuses to produce working payloads. The product decision is cite-and-refuse, not just retrieval.">
+<meta name="theme-color" content="#0a0f0d">
+<meta property="og:title" content="Study Assistant — cited, and it refuses">
+<meta property="og:description" content="Learn how a technique works, from cited sources, with a sandbox to practise in. No working payloads, on purpose.">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://vishnuvsdevtech.github.io/sec-study-assistant/">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="dot"></span><strong>STUDY ASSISTANT</strong><span class="tag mono">POC · cited + refusing</span></div>
+  <a class="gh mono" href="https://github.com/vishnuvsdevtech/sec-study-assistant">source →</a>
+</header>
+<main>
+  <section class="hero">
+    <p class="eyebrow mono">the line, drawn in software</p>
+    <h1>Explains the technique.<br><em>Refuses the payload.</em></h1>
+    <p class="lede">
+      A study assistant is only useful if you can trust it, and only safe if it knows what not to
+      produce. This one answers from a <strong>cited corpus</strong>, shows its sources, and
+      declines requests for working attacks — pointing at a sandbox instead. No model, no API
+      key: the retrieval and the refusal are both inspectable.
+    </p>
+    <div class="specs mono"><span>13 cited entries</span><span>TF-IDF retrieval</span><span>refusal classifier</span><span>no credentials</span></div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head"><h2>Ask it something</h2>
+      <p class="muted small">Try both sides of the line — one explains, the other is refused.</p></div>
+    <form class="ask" id="ask">
+      <input id="q" type="text" placeholder="e.g. what is prompt injection in a rag pipeline" autocomplete="off" aria-label="Your question">
+      <button type="submit" class="btn">Ask</button>
+    </form>
+    <div class="chips" id="chips"></div>
+    <div id="out" class="out"></div>
+  </section>
+
+  <section class="grid2">
+    <div class="card">
+      <h3>Why no model</h3>
+      <p>Because the interesting part isn't generation. A retrieval layer over a small curated corpus
+      makes two decisions visible: <strong>every answer carries its source</strong>, and the refusal
+      path is a classifier you can read and argue with — not a vibe inside a system prompt.</p>
+      <p class="muted small">Swap the corpus for your team's runbooks and the same code becomes an
+      internal assistant that cites you correctly.</p>
+    </div>
+    <div class="card">
+      <h3>Where the line sits</h3>
+      <ul class="ticks">
+        <li><strong>Explaining a mechanism</strong> — allowed, and the whole point.</li>
+        <li><strong>Naming the defence</strong> — allowed; it's what you actually ship.</li>
+        <li><strong>Pointing at an authorised lab</strong> — allowed, and better than a payload.</li>
+        <li><strong>Producing working attack code</strong> — refused. That is the offence, not the study.</li>
+      </ul>
+      <p class="muted small">The classifier is deliberately blunt: it catches requests for payloads and
+      execution against named targets. It will miss paraphrases — which is the honest limit of a regex,
+      and the reason a production version needs a model-backed intent layer with a human on the refusal path.</p>
+    </div>
+  </section>
+
+  <section class="panel tight">
+    <div class="panel-head"><h2>The corpus</h2><p class="muted small">Hand-written summaries with a canonical source per entry. Nothing is generated at answer time.</p></div>
+    <div class="corpus" id="corpus"></div>
+  </section>
+</main>
+<footer class="foot mono"><span>Study Assistant · POC</span><span>cite, or refuse</span></footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

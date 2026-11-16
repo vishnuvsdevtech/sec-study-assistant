@@ -1,0 +1,152 @@
+[
+ {
+  "id": "A01",
+  "cat": "web",
+  "title": "Broken access control",
+  "src": "https://owasp.org/Top10/A01_2021-Broken_Access_Control/",
+  "text": "Access control enforces what an authenticated user is allowed to do. It breaks when the check lives only in the UI, when object IDs are trusted from the request, or when a role is enforced on one route and forgotten on its sibling. The defensive pattern is server-side authorisation on every request, keyed to the session's identity rather than to anything the client sends.",
+  "checks": [
+   "server-side check on every route",
+   "object ownership verified per request",
+   "deny by default"
+  ]
+ },
+ {
+  "id": "A02",
+  "cat": "web",
+  "title": "Cryptographic failures",
+  "src": "https://owasp.org/Top10/A02_2021-Cryptographic_Failures/",
+  "text": "Data is exposed because cryptography is missing or misapplied: plaintext storage of secrets, home-grown encryption, weak hashing for passwords, or transport without TLS. Passwords belong in a slow KDF such as Argon2id or bcrypt with a per-user salt; secrets belong in a managed store, never in the repository.",
+  "checks": [
+   "Argon2id/bcrypt for passwords",
+   "TLS everywhere",
+   "no secrets in git"
+  ]
+ },
+ {
+  "id": "A03",
+  "cat": "web",
+  "title": "Injection",
+  "src": "https://owasp.org/Top10/A03_2021-Injection/",
+  "text": "Untrusted input is interpreted as code or command by the downstream system: SQL, shell, LDAP, template engines, ORMs. The fix is structural rather than a filter \u2014 parameterised queries, argument arrays instead of shell strings, and contextual output encoding, so input never becomes syntax.",
+  "checks": [
+   "parameterised queries",
+   "no string-built shell commands",
+   "contextual output encoding"
+  ]
+ },
+ {
+  "id": "A04",
+  "cat": "web",
+  "title": "Insecure design",
+  "src": "https://owasp.org/Top10/A04_2021-Insecure_Design/",
+  "text": "A category for missing controls rather than broken ones: no rate limiting on a password reset, no separation of duties, business rules enforced only in the browser. Design-time threats modelling and abuse-case tests catch these; no amount of code review fixes a missing requirement.",
+  "checks": [
+   "threat model per feature",
+   "abuse cases in tests",
+   "limits on sensitive flows"
+  ]
+ },
+ {
+  "id": "A07",
+  "cat": "web",
+  "title": "Authentication failures",
+  "src": "https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures/",
+  "text": "Weak login mechanics: credential stuffing with no lockout, predictable session identifiers, sessions that survive logout, MFA that can be skipped by hitting an older endpoint. Defences are session rotation on privilege change, generic error messages, and rate limiting keyed on identity, not just IP.",
+  "checks": [
+   "rotate session on login",
+   "generic auth errors",
+   "rate limit per identity"
+  ]
+ },
+ {
+  "id": "A10",
+  "cat": "web",
+  "title": "Server-side request forgery",
+  "src": "https://owasp.org/Top10/A10_2021-Server-Side_Request_Forgery_%28SSRF%29/",
+  "text": "The server fetches a URL supplied by the user and reaches something it should not: internal metadata endpoints, loopback services, cloud credential APIs. Allowlist destinations and schemes, resolve DNS and re-check the address after resolution, and never let a redirect widen the original target.",
+  "checks": [
+   "destination allowlist",
+   "block link-local ranges",
+   "validate after redirects"
+  ]
+ },
+ {
+  "id": "L01",
+  "cat": "llm",
+  "title": "Prompt injection",
+  "src": "https://owasp.org/www-project-top-10-for-large-language-model-applications/",
+  "text": "Untrusted text enters the context and is treated as instruction. Direct injection comes from the user; indirect injection arrives inside retrieved documents, web pages or tool output. There is no complete fix, so the engineering answer is to reduce blast radius: least-privilege tools, human confirmation for consequential actions, and output treated as untrusted data.",
+  "checks": [
+   "least-privilege tools",
+   "confirm before side effects",
+   "treat retrieved text as data"
+  ]
+ },
+ {
+  "id": "L02",
+  "cat": "llm",
+  "title": "Insecure output handling",
+  "src": "https://owasp.org/www-project-top-10-for-large-language-model-applications/",
+  "text": "Model output is passed downstream without validation \u2014 rendered as HTML, executed as SQL, or run as a shell argument. The model is an untrusted source like any other, so output needs the same contextual encoding and parameterisation as user input.",
+  "checks": [
+   "encode model output",
+   "never eval/exec it",
+   "schema-validate structured output"
+  ]
+ },
+ {
+  "id": "L06",
+  "cat": "llm",
+  "title": "Excessive agency",
+  "src": "https://owasp.org/www-project-top-10-for-large-language-model-applications/",
+  "text": "An agent is granted more capability than the task needs: write access where read would do, broad scopes, no confirmation on destructive calls. Agency should be scoped per task, with reversible operations preferred and an audit trail for anything irreversible.",
+  "checks": [
+   "minimum scope per task",
+   "prefer reversible actions",
+   "audit every tool call"
+  ]
+ },
+ {
+  "id": "L08",
+  "cat": "llm",
+  "title": "Vector and embedding weaknesses",
+  "src": "https://owasp.org/www-project-top-10-for-large-language-model-applications/",
+  "text": "A RAG store inherits its ingest policy. If documents from different tenants share a namespace, retrieval leaks across them; if ingest is unvetted, a poisoned document is served as authoritative context. Enforce per-tenant namespaces, validate documents at ingest, and treat retrieved text as untrusted input.",
+  "checks": [
+   "per-tenant namespaces",
+   "validate at ingest",
+   "retrieved text is untrusted"
+  ]
+ },
+ {
+  "id": "P01",
+  "cat": "practice",
+  "title": "SQL injection labs",
+  "src": "https://portswigger.net/web-security/sql-injection",
+  "text": "The authoritative free lab set for injection: in-band, blind, and out-of-band cases, each in a sandbox you are authorised to attack. Work through them in order; the point is recognising the query shape from behaviour, not memorising payload strings.",
+  "checks": [
+   "practise in the provided sandbox only"
+  ]
+ },
+ {
+  "id": "P02",
+  "cat": "practice",
+  "title": "Authentication labs",
+  "src": "https://portswigger.net/web-security/authentication",
+  "text": "Labs on credential handling: username enumeration, brute-force protection gaps, flawed MFA, password reset logic. These teach the pattern behind most real account-takeover reports.",
+  "checks": [
+   "practise in the provided sandbox only"
+  ]
+ },
+ {
+  "id": "P03",
+  "cat": "practice",
+  "title": "Business logic flaws",
+  "src": "https://portswigger.net/web-security/logic-flaws",
+  "text": "Labs where the code does what it says and the flaw is in the requirement: sequencing, negative quantities, trust in client-supplied price. No scanner finds these; they are found by asking what the workflow assumes.",
+  "checks": [
+   "practise in the provided sandbox only"
+  ]
+ }
+]
